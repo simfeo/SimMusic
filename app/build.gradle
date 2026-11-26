@@ -21,7 +21,7 @@ android {
     def keyAliasProp = findProperty('SEVENUI_KEY_ALIAS')
     def keychainPassword = {
         try {
-            def p = ['security', 'find-generic-password', '-s', '7ui-signing', '-w'].execute()
+            def p = ['security', 'find-generic-password', '-s', '7ui-release-key', '-w'].execute()
             def out = p.text.trim()
             p.waitFor() == 0 ? out : null
         } catch (Exception ignored) { null }
@@ -42,7 +42,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
             if (signingConfigs.release.storeFile) signingConfig signingConfigs.release
         }
     }
