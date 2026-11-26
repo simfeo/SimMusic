@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_tracks">歌曲</string>
+    <string name="tab_albums">专辑</string>
+    <string name="tab_artists">歌手</string>
+    <string name="tab_folders">文件夹</string>
+    <string name="tab_playlists">播放列表</string>
+    <string name="search">搜索</string>
+    <string name="play_all">播放</string>
+    <string name="shuffle">随机播放</string>
+    <string name="queue">播放队列</string>
+    <string name="previous">上一首</string>
+    <string name="next">下一首</string>
+    <string name="widget_description">正在播放及播放控制</string>
+    <string name="widget_up_next">没有待播歌曲</string>
+    <string name="settings">设置</string>
+    <string name="accent_color">强调色</string>
+    <string name="accent_pink">粉色</string>
+    <string name="accent_blue">蓝色</string>
+    <string name="accent_teal">青色</string>
+    <string name="accent_green">绿色</string>
+    <string name="accent_orange">橙色</string>
+    <string name="accent_red">红色</string>
+    <string name="accent_purple">紫色</string>
+    <string name="accent_mono">单色</string>
+    <string name="folder_view">文件夹视图</string>
+    <string name="folder_view_all">所有文件夹</string>
+    <string name="folder_view_all_summary">所有音乐文件夹显示在一个列表中</string>
+    <string name="folder_view_tree">树状</string>
+    <string name="folder_view_tree_summary">浏览文件夹中的文件夹</string>
+    <string name="folder_sort">文件夹排序方式</string>
+    <string name="folder_sort_name">文件夹名称</string>
+    <string name="folder_sort_path">完整路径</string>
+    <string name="playback">播放</string>
+    <string name="include_subfolders">包含子文件夹</string>
+    <string name="include_subfolders_summary">在树状视图中播放文件夹时也会播放其子文件夹</string>
+    <string name="more_options">更多选项</string>
+    <string name="track_details">歌曲详情</string>
+    <string name="go_to_album">专辑</string>
+    <string name="go_to_artist">歌手</string>
+    <string name="share">分享</string>
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="set_as_ringtone">设为铃声</string>
+    <string name="remove_from_queue">从队列中移除</string>
+    <string name="delete_tracks_text">这些文件将从您的手机中删除。</string>
+    <string name="ringtone_permission">请允许 Sim Music 修改系统设置，然后重试。</string>
+    <string name="ringtone_set">已设为铃声</string>
+    <string name="ringtone_failed">无法设置铃声</string>
+    <string name="detail_title">标题</string>
+    <string name="detail_artist">歌手</string>
+    <string name="detail_album">专辑</string>
+    <string name="detail_duration">时长</string>
+    <string name="detail_format">格式</string>
+    <string name="detail_bitrate">比特率</string>
+    <string name="detail_size">大小</string>
+    <string name="detail_path">位置</string>
+    <string name="shuffle_desc">随机播放</string>
+    <string name="repeat_desc">重复</string>
+    <string name="permission_needed">Sim Music 需要访问您的音乐文件。</string>
+    <string name="grant">允许</string>
+    <string name="no_tracks">没有歌曲</string>
+    <string name="not_playing">未在播放</string>
+    <string name="unknown_artist">未知歌手</string>
+    <string name="unknown_album">未知专辑</string>
+    <string name="playlists_soon">播放列表将在后续版本中推出。</string>
+    <plurals name="n_tracks">
+        <item quantity="other">%d 首歌曲</item>
+    </plurals>
+    <plurals name="n_folders">
+        <item quantity="other">%d 个文件夹</item>
+    </plurals>
+    <plurals name="n_selected">
+        <item quantity="other">已选择 %d 项</item>
+    </plurals>
+    <plurals name="delete_tracks_title">
+        <item quantity="other">删除 %d 首歌曲？</item>
+    </plurals>
+</resources>

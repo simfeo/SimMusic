@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Taller widget: the same now playing row on top, the upcoming queue below. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg_large"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <include
+        layout="@layout/widget_header"
+        android:layout_width="match_parent"
+        android:layout_height="76dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/widget_inner_bg">
+
+        <ListView
+            android:id="@+id/widget_queue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:paddingVertical="6dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:id="@+id/widget_queue_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/widget_up_next"
+            android:textColor="@color/widget_text2"
+            android:textSize="14sp" />
+    </FrameLayout>
+</LinearLayout>

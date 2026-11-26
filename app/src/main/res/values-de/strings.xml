@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_tracks">Titel</string>
+    <string name="tab_albums">Alben</string>
+    <string name="tab_artists">Künstler</string>
+    <string name="tab_folders">Ordner</string>
+    <string name="tab_playlists">Playlists</string>
+    <string name="search">Suche</string>
+    <string name="play_all">Abspielen</string>
+    <string name="shuffle">Zufällig</string>
+    <string name="queue">Warteschlange</string>
+    <string name="previous">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="widget_description">Aktueller Titel mit Wiedergabesteuerung</string>
+    <string name="widget_up_next">Nichts in der Warteschlange</string>
+    <string name="settings">Einstellungen</string>
+    <string name="accent_color">Akzentfarbe</string>
+    <string name="accent_pink">Rosa</string>
+    <string name="accent_blue">Blau</string>
+    <string name="accent_teal">Petrol</string>
+    <string name="accent_green">Grün</string>
+    <string name="accent_orange">Orange</string>
+    <string name="accent_red">Rot</string>
+    <string name="accent_purple">Lila</string>
+    <string name="accent_mono">Mono</string>
+    <string name="folder_view">Ordneransicht</string>
+    <string name="folder_view_all">Alle Ordner</string>
+    <string name="folder_view_all_summary">Alle Musikordner in einer Liste</string>
+    <string name="folder_view_tree">Baum</string>
+    <string name="folder_view_tree_summary">Ordner in Ordnern durchsuchen</string>
+    <string name="folder_sort">Ordner sortieren nach</string>
+    <string name="folder_sort_name">Ordnername</string>
+    <string name="folder_sort_path">Vollständiger Pfad</string>
+    <string name="playback">Wiedergabe</string>
+    <string name="include_subfolders">Unterordner einbeziehen</string>
+    <string name="include_subfolders_summary">In der Baumansicht spielt ein Ordner auch seine Unterordner ab</string>
+    <string name="more_options">Weitere Optionen</string>
+    <string name="track_details">Titeldetails</string>
+    <string name="go_to_album">Album</string>
+    <string name="go_to_artist">Künstler</string>
+    <string name="share">Teilen</string>
+    <string name="delete">Löschen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="ok">OK</string>
+    <string name="set_as_ringtone">Als Klingelton festlegen</string>
+    <string name="remove_from_queue">Aus der Warteschlange entfernen</string>
+    <string name="delete_tracks_text">Die Dateien werden von deinem Smartphone gelöscht.</string>
+    <string name="ringtone_permission">Erlaube Sim Music, Systemeinstellungen zu ändern, und versuche es dann erneut.</string>
+    <string name="ringtone_set">Klingelton festgelegt</string>
+    <string name="ringtone_failed">Der Klingelton konnte nicht festgelegt werden</string>
+    <string name="detail_title">Titel</string>
+    <string name="detail_artist">Künstler</string>
+    <string name="detail_album">Album</string>
+    <string name="detail_duration">Dauer</string>
+    <string name="detail_format">Format</string>
+    <string name="detail_bitrate">Bitrate</string>
+    <string name="detail_size">Größe</string>
+    <string name="detail_path">Speicherort</string>
+    <string name="shuffle_desc">Zufallswiedergabe</string>
+    <string name="repeat_desc">Wiederholen</string>
+    <string name="permission_needed">Sim Music benötigt Zugriff auf deine Musikdateien.</string>
+    <string name="grant">Zulassen</string>
+    <string name="no_tracks">Keine Titel</string>
+    <string name="not_playing">Keine Wiedergabe</string>
+    <string name="unknown_artist">Unbekannter Künstler</string>
+    <string name="unknown_album">Unbekanntes Album</string>
+    <string name="playlists_soon">Playlists kommen in einer späteren Version.</string>
+    <plurals name="n_tracks">
+        <item quantity="one">%d Titel</item>
+        <item quantity="other">%d Titel</item>
+    </plurals>
+    <plurals name="n_folders">
+        <item quantity="one">%d Ordner</item>
+        <item quantity="other">%d Ordner</item>
+    </plurals>
+    <plurals name="n_selected">
+        <item quantity="one">%d ausgewählt</item>
+        <item quantity="other">%d ausgewählt</item>
+    </plurals>
+    <plurals name="delete_tracks_title">
+        <item quantity="one">%d Titel löschen?</item>
+        <item quantity="other">%d Titel löschen?</item>
+    </plurals>
+</resources>

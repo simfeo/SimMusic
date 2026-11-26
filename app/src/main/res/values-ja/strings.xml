@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_tracks">曲</string>
+    <string name="tab_albums">アルバム</string>
+    <string name="tab_artists">アーティスト</string>
+    <string name="tab_folders">フォルダ</string>
+    <string name="tab_playlists">プレイリスト</string>
+    <string name="search">検索</string>
+    <string name="play_all">再生</string>
+    <string name="shuffle">シャッフル</string>
+    <string name="queue">再生キュー</string>
+    <string name="previous">前へ</string>
+    <string name="next">次へ</string>
+    <string name="widget_description">再生中の曲と再生コントロール</string>
+    <string name="widget_up_next">次の曲はありません</string>
+    <string name="settings">設定</string>
+    <string name="accent_color">アクセントカラー</string>
+    <string name="accent_pink">ピンク</string>
+    <string name="accent_blue">ブルー</string>
+    <string name="accent_teal">ティール</string>
+    <string name="accent_green">グリーン</string>
+    <string name="accent_orange">オレンジ</string>
+    <string name="accent_red">レッド</string>
+    <string name="accent_purple">パープル</string>
+    <string name="accent_mono">モノクロ</string>
+    <string name="folder_view">フォルダ表示</string>
+    <string name="folder_view_all">すべてのフォルダ</string>
+    <string name="folder_view_all_summary">すべての音楽フォルダを1つのリストで表示</string>
+    <string name="folder_view_tree">ツリー</string>
+    <string name="folder_view_tree_summary">フォルダ内のフォルダを閲覧</string>
+    <string name="folder_sort">フォルダの並べ替え</string>
+    <string name="folder_sort_name">フォルダ名</string>
+    <string name="folder_sort_path">フルパス</string>
+    <string name="playback">再生</string>
+    <string name="include_subfolders">サブフォルダを含める</string>
+    <string name="include_subfolders_summary">ツリー表示でフォルダを再生すると、サブフォルダも再生します</string>
+    <string name="more_options">その他のオプション</string>
+    <string name="track_details">曲の詳細</string>
+    <string name="go_to_album">アルバム</string>
+    <string name="go_to_artist">アーティスト</string>
+    <string name="share">共有</string>
+    <string name="delete">削除</string>
+    <string name="cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="set_as_ringtone">着信音に設定</string>
+    <string name="remove_from_queue">キューから削除</string>
+    <string name="delete_tracks_text">ファイルはスマートフォンから削除されます。</string>
+    <string name="ringtone_permission">「Sim Music」にシステム設定の変更を許可してから、もう一度お試しください。</string>
+    <string name="ringtone_set">着信音を設定しました</string>
+    <string name="ringtone_failed">着信音を設定できませんでした</string>
+    <string name="detail_title">タイトル</string>
+    <string name="detail_artist">アーティスト</string>
+    <string name="detail_album">アルバム</string>
+    <string name="detail_duration">再生時間</string>
+    <string name="detail_format">形式</string>
+    <string name="detail_bitrate">ビットレート</string>
+    <string name="detail_size">サイズ</string>
+    <string name="detail_path">場所</string>
+    <string name="shuffle_desc">シャッフル</string>
+    <string name="repeat_desc">リピート</string>
+    <string name="permission_needed">Sim Musicには音楽ファイルへのアクセスが必要です。</string>
+    <string name="grant">許可</string>
+    <string name="no_tracks">曲がありません</string>
+    <string name="not_playing">再生していません</string>
+    <string name="unknown_artist">不明なアーティスト</string>
+    <string name="unknown_album">不明なアルバム</string>
+    <string name="playlists_soon">プレイリストは今後のバージョンで追加されます。</string>
+    <plurals name="n_tracks">
+        <item quantity="other">%d曲</item>
+    </plurals>
+    <plurals name="n_folders">
+        <item quantity="other">%dフォルダ</item>
+    </plurals>
+    <plurals name="n_selected">
+        <item quantity="other">%d件を選択</item>
+    </plurals>
+    <plurals name="delete_tracks_title">
+        <item quantity="other">%d曲を削除しますか？</item>
+    </plurals>
+</resources>
