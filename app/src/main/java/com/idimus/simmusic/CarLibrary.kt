@@ -10,8 +10,8 @@ import androidx.media3.session.MediaConstants
 /**
  * Browse tree for Android Auto and other media browsers.
  *
- *   root -> folders | albums | artists | tracks
- *   folder:<path>, album:<id>, artist:<name>   opened on tap; voice requests can still play them whole
+ *   root -> folders | albums | artists | tracks | playlists
+ *   folder:<path>, album:<id>, artist:<name>, playlist:<path>   opened on tap; voice requests can still play them whole
  *   t:<trackId>@<parentId>                     a track that plays its parent list from that track
  *
  * Queue items keep the plain track id the app uses, so phone and car share one queue format.
@@ -22,6 +22,7 @@ object CarLibrary {
     private const val ALBUMS = "albums"
     private const val ARTISTS = "artists"
     private const val TRACKS = "tracks"
+    private const val PLAYLISTS = "playlists"
     const val SEARCH = "search:"
 
     private fun prefs(c: Context) = c.getSharedPreferences("settings", Context.MODE_PRIVATE)
@@ -36,7 +37,13 @@ object CarLibrary {
             browsable(ALBUMS, c.getString(R.string.tab_albums), null, MediaMetadata.MEDIA_TYPE_FOLDER_ALBUMS, playable = false, grid = true),
             browsable(ARTISTS, c.getString(R.string.tab_artists), null, MediaMetadata.MEDIA_TYPE_FOLDER_ARTISTS, playable = false),
             browsable(TRACKS, c.getString(R.string.tab_tracks), null, MediaMetadata.MEDIA_TYPE_FOLDER_MIXED, playable = false),
+            browsable(PLAYLISTS, c.getString(R.string.tab_playlists), null, MediaMetadata.MEDIA_TYPE_FOLDER_PLAYLISTS, playable = false),
         )
+        parentId == PLAYLISTS -> playlists(c, lib).map {
+            val n = it.tracks.size
+            browsable("playlist:${it.path}", it.name, c.resources.getQuantityString(R.plurals.n_tracks, n, n), MediaMetadata.MEDIA_TYPE_PLAYLIST,
+                art = it.tracks.firstOrNull()?.id?.let(::artUri))
+        }
         parentId == FOLDERS -> if (folderTree(c)) folderChildren(c, lib.browseRoot) else
             lib.musicFoldersSorted(prefs(c).getBoolean("folder_sort_path", false)).map { folderItem(c, it) }
         parentId == ALBUMS -> lib.albums.map {
@@ -71,8 +78,12 @@ object CarLibrary {
         id.startsWith("album:") -> lib.albums.firstOrNull { it.id.toString() == id.removePrefix("album:") }?.tracks
         id.startsWith("artist:") -> lib.artists.firstOrNull { it.name == id.removePrefix("artist:") }?.tracks
         id.startsWith(SEARCH) -> search(lib, id.removePrefix(SEARCH))
+        id.startsWith("playlist:") -> playlists(c, lib).firstOrNull { it.path == id.removePrefix("playlist:") }?.tracks
         else -> null
     }
+
+    /** The car can browse before the app was ever opened, so the first request scans for playlists. */
+    private fun playlists(c: Context, lib: Library): List<Playlist> = PlaylistStore.get().ifEmpty { PlaylistStore.reload(c, lib) }
 
     /** Resolves what a browser asked to play into a queue and the index to start at. */
     fun resolvePlay(c: Context, lib: Library, item: MediaItem): Pair<List<Track>, Int>? {
@@ -86,12 +97,13 @@ object CarLibrary {
         playList(c, lib, id)?.let { return it to 0 }
         // Voice "play X on Sim Music" arrives as an empty id with a search query.
         val query = item.requestMetadata.searchQuery ?: return null
-        return voiceQueue(lib, query) to 0
+        return voiceQueue(c, lib, query) to 0
     }
 
-    private fun voiceQueue(lib: Library, query: String): List<Track> {
+    private fun voiceQueue(c: Context, lib: Library, query: String): List<Track> {
         val q = query.trim().lowercase()
         if (q.isEmpty()) return lib.tracks.shuffled()
+        playlists(c, lib).firstOrNull { it.name.lowercase() == q }?.let { return it.tracks }
         lib.artists.firstOrNull { it.name.lowercase() == q }?.let { return it.tracks }
         lib.albums.firstOrNull { it.name.lowercase() == q }?.let { return it.tracks }
         lib.musicFolders.firstOrNull { it.name.lowercase() == q }?.let { return it.tracks }

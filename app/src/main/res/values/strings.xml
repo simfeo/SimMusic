@@ -65,7 +65,32 @@
     <string name="not_playing">Not playing</string>
     <string name="unknown_artist">Unknown artist</string>
     <string name="unknown_album">Unknown album</string>
-    <string name="playlists_soon">Playlists are coming in a later version.</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="add_to_playlist_short">Add to</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="delete_playlist_title">Delete \"%s\"?</string>
+    <string name="delete_playlist_text">The playlist file will be deleted. The tracks stay on your phone.</string>
+    <string name="playlist_name">Name</string>
+    <string name="save_in">Save in</string>
+    <string name="create">Create</string>
+    <string name="recent">Recent</string>
+    <string name="all_playlists">All playlists</string>
+    <string name="no_playlists">No playlists yet. Playlist files (.m3u, .m3u8, .pls) on your phone show up here.</string>
+    <string name="playlist_exists">A playlist with this name already exists</string>
+    <string name="playlist_read_only">PLS playlists can only be played</string>
+    <string name="playlist_save_failed">Could not save the playlist</string>
+    <string name="added_to_playlist">Added to %s</string>
+    <string name="missing_track">File not found</string>
+    <string name="playlist_folders">Playlist folders</string>
+    <string name="playlist_folders_summary">Folders where Sim Music may create and edit playlists</string>
+    <string name="add_folder">Add folder</string>
+    <string name="remove">Remove</string>
+    <string name="internal_storage">Internal storage</string>
+    <string name="grant_folder_title">Allow editing?</string>
+    <string name="grant_folder_text">To change this playlist, allow Sim Music to edit the folder %s. Choose it, or a folder above it, and tap Use this folder.</string>
+    <string name="choose_folder">Choose folder</string>
     <plurals name="n_tracks">
         <item quantity="one">%d track</item>
         <item quantity="other">%d tracks</item>
@@ -77,6 +102,10 @@
     <plurals name="delete_tracks_title">
         <item quantity="one">Delete %d track?</item>
         <item quantity="other">Delete %d tracks?</item>
+    </plurals>
+    <plurals name="n_playlists">
+        <item quantity="one">%d playlist</item>
+        <item quantity="other">%d playlists</item>
     </plurals>
     <plurals name="n_folders">
         <item quantity="one">%d folder</item>

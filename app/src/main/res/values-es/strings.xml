@@ -64,7 +64,6 @@
     <string name="not_playing">Nada en reproducción</string>
     <string name="unknown_artist">Artista desconocido</string>
     <string name="unknown_album">Álbum desconocido</string>
-    <string name="playlists_soon">Las listas llegarán en una versión posterior.</string>
     <plurals name="n_tracks">
         <item quantity="one">%d canción</item>
         <item quantity="many">%d canciones</item>
@@ -84,5 +83,35 @@
         <item quantity="one">¿Eliminar %d canción?</item>
         <item quantity="many">¿Eliminar %d canciones?</item>
         <item quantity="other">¿Eliminar %d canciones?</item>
+    </plurals>
+    <string name="new_playlist">Nueva lista</string>
+    <string name="add_to_playlist">Añadir a lista</string>
+    <string name="add_to_playlist_short">Añadir</string>
+    <string name="remove_from_playlist">Quitar de la lista</string>
+    <string name="delete_playlist">Eliminar lista</string>
+    <string name="delete_playlist_title">¿Eliminar «%s»?</string>
+    <string name="delete_playlist_text">Se eliminará el archivo de la lista. Las canciones se quedan en tu teléfono.</string>
+    <string name="playlist_name">Nombre</string>
+    <string name="save_in">Guardar en</string>
+    <string name="create">Crear</string>
+    <string name="recent">Recientes</string>
+    <string name="all_playlists">Todas las listas</string>
+    <string name="no_playlists">Aún no hay listas. Aquí aparecen los archivos de listas (.m3u, .m3u8, .pls) de tu teléfono.</string>
+    <string name="playlist_exists">Ya existe una lista con este nombre</string>
+    <string name="playlist_read_only">Las listas PLS solo se pueden reproducir</string>
+    <string name="playlist_save_failed">No se pudo guardar la lista</string>
+    <string name="added_to_playlist">Añadido a %s</string>
+    <string name="missing_track">Archivo no encontrado</string>
+    <string name="playlist_folders">Carpetas de listas</string>
+    <string name="playlist_folders_summary">Carpetas donde Sim Music puede crear y editar listas</string>
+    <string name="add_folder">Añadir carpeta</string>
+    <string name="remove">Quitar</string>
+    <string name="internal_storage">Almacenamiento interno</string>
+    <string name="grant_folder_title">¿Permitir edición?</string>
+    <string name="grant_folder_text">Para cambiar esta lista, permite que Sim Music edite la carpeta %s. Elígela, o una carpeta superior, y toca Usar esta carpeta.</string>
+    <string name="choose_folder">Elegir carpeta</string>
+    <plurals name="n_playlists">
+        <item quantity="one">%d lista</item>
+        <item quantity="other">%d listas</item>
     </plurals>
 </resources>

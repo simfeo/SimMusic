@@ -87,6 +87,7 @@ private sealed interface Screen {
     data class AlbumView(val id: Long) : Screen
     data class ArtistView(val name: String) : Screen
     data object Search : Screen
+    data class PlaylistView(val path: String) : Screen
 }
 
 @Composable
@@ -131,7 +132,7 @@ private fun App(vm: MusicViewModel = viewModel()) {
     }
 
     CompositionLocalProvider(LocalSelection provides selection, LocalActions provides actions) {
-    TrackActionDialogs(actions)
+    TrackActionDialogs(actions, vm)
     Box(Modifier.fillMaxSize().background(SevenColors.canvas())) {
         Column(Modifier.fillMaxSize().statusBarsPadding()) {
           Box(Modifier.weight(1f)) {
@@ -152,6 +153,9 @@ private fun App(vm: MusicViewModel = viewModel()) {
                         }
                     } ?: PopWhenGone(stack)
                     Screen.Search -> SearchScreen(lib, vm, { stack.removeAt(stack.lastIndex) }) { stack += it }
+                    is Screen.PlaylistView -> vm.playlists.firstOrNull { it.path == s.path }?.let { pl ->
+                        PlaylistScreen(pl, vm) { stack.removeAt(stack.lastIndex) }
+                    } ?: PopWhenGone(stack)
                 }
             }
           }
@@ -172,6 +176,7 @@ private fun App(vm: MusicViewModel = viewModel()) {
                     SelectionBar(
                         shownCount, onClose = { selection.clear() },
                         onPlay = { vm.play(picked()); selection.clear() },
+                        onAdd = { actions.addTo = picked(); selection.clear() },
                         onShare = { actions.share(picked()) },
                         onDelete = { actions.pendingDelete = picked() },
                     )
@@ -274,9 +279,105 @@ private fun Home(lib: Library, vm: MusicViewModel, tab: Int, onTab: (Int) -> Uni
                     items(folders, key = { "ff" + it.path }) { f -> FlatFolderRow(f, vm) { open(Screen.FolderView(f.path, flat = true)) } }
                 }
             }
-            else -> Box(Modifier.fillMaxSize().padding(32.dp), Alignment.TopCenter) {
-                Text(stringResource(R.string.playlists_soon), color = SevenColors.secondaryText())
+            else -> {
+                val actions = LocalActions.current
+                CardList(remember(vm.playlists) { vm.playlists.map { it.name } }, 1) {
+                    item {
+                        Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Text(pluralStringResource(R.plurals.n_playlists, vm.playlists.size, vm.playlists.size), color = SevenColors.secondaryText(),
+                                fontSize = 14.sp, modifier = Modifier.weight(1f))
+                            PillButton(Icons.Rounded.Add, stringResource(R.string.new_playlist), { actions?.newPlaylistFor = emptyList() }, filled = true)
+                        }
+                    }
+                    if (vm.playlists.isEmpty()) item {
+                        Text(stringResource(R.string.no_playlists), color = SevenColors.secondaryText(), fontSize = 15.sp,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp))
+                    }
+                    items(vm.playlists, key = { "p" + it.path }) { pl -> PlaylistRow(pl, vm) { open(Screen.PlaylistView(pl.path)) } }
+                }
             }
+        }
+    }
+}
+
+@Composable
+private fun PlaylistRow(pl: Playlist, vm: MusicViewModel, onClick: () -> Unit) {
+    val actions = LocalActions.current
+    val n = pl.tracks.size
+    val where = displayPath(pl.dir).ifEmpty { stringResource(R.string.internal_storage) }
+    Row(
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick).padding(start = 12.dp, end = 0.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(Modifier.size(48.dp).clip(RoundedCornerShape(10.dp)).background(SevenColors.artPlaceholder()), Alignment.Center) {
+            Icon(Icons.AutoMirrored.Rounded.QueueMusic, null, tint = SevenColors.accent, modifier = Modifier.size(28.dp))
+        }
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(pl.name, color = SevenColors.text(), fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(pluralStringResource(R.plurals.n_tracks, n, n) + " · " + where, color = SevenColors.secondaryText(),
+                fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
+        FolderPlayButton { vm.playPlaylist(pl) }
+        PlaylistMenu(pl) { actions?.deletePlaylistAsk = pl }
+    }
+}
+
+@Composable
+private fun PlaylistMenu(pl: Playlist, onDelete: () -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        IconButton({ open = true }) { Icon(Icons.Rounded.MoreVert, stringResource(R.string.more_options), tint = SevenColors.secondaryText()) }
+        DropdownMenu(open, { open = false }, containerColor = SevenColors.card(), shape = RoundedCornerShape(20.dp)) {
+            DropdownMenuItem({ Text(stringResource(R.string.delete_playlist), color = SevenColors.text(), fontSize = 16.sp) }, { open = false; onDelete() })
+        }
+    }
+}
+
+@Composable
+private fun PlaylistScreen(pl: Playlist, vm: MusicViewModel, onBack: () -> Unit) {
+    val actions = LocalActions.current
+    Column(Modifier.fillMaxSize()) {
+        Row(Modifier.fillMaxWidth().padding(start = 4.dp, end = 4.dp, top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, null, tint = SevenColors.text()) }
+            Spacer(Modifier.weight(1f))
+            PlaylistMenu(pl) { actions?.deletePlaylistAsk = pl }
+        }
+        Column(Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
+            Text(pl.name, fontSize = 28.sp, fontWeight = FontWeight.Medium, color = SevenColors.text(), maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(displayPath(pl.path), fontSize = 14.sp, color = SevenColors.secondaryText(), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
+        // Playlist order is the user's own, so no letter index here.
+        val playable = pl.tracks
+        CardList {
+            item { PlayShuffleBar(playable.size, { vm.playPlaylist(pl) }, { vm.playPlaylist(pl, shuffled = true) }) }
+            itemsIndexed(pl.entries, key = { i, e -> "e$i" + (e.track?.id ?: e.raw) }) { i, e ->
+                val t = e.track
+                if (t == null) MissingRow(e.raw)
+                else {
+                    val extra = if (pl.editable) listOf(R.string.remove_from_playlist to { actions?.removeFromPlaylist(pl, i); Unit }) else emptyList()
+                    Row2(t.id, t.title, t.artist.ifEmpty { stringResource(R.string.unknown_artist) }, highlight = vm.current?.mediaId == t.id.toString(),
+                        selectKey = "t${t.id}", trailing = { TrackMenuButton(t, extra) }) {
+                        // Missing lines are skipped, so the queue position counts only the found tracks before this one.
+                        vm.playPlaylist(pl, pl.entries.take(i).count { it.track != null })
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** A playlist line whose file is gone: shown greyed out and skipped when playing. */
+@Composable
+private fun MissingRow(raw: String) {
+    Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.size(48.dp).clip(RoundedCornerShape(10.dp)).background(SevenColors.artPlaceholder()), Alignment.Center) {
+            Icon(Icons.Rounded.MusicOff, null, tint = SevenColors.secondaryText(), modifier = Modifier.size(24.dp))
+        }
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(raw.replace('\\', '/').substringAfterLast('/'), color = SevenColors.secondaryText(), fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(R.string.missing_track), color = SevenColors.secondaryText(), fontSize = 13.sp)
         }
     }
 }
@@ -427,9 +528,6 @@ private fun FolderPlayButton(onClick: () -> Unit) {
     }
 }
 
-/** Path as users know it from file managers: internal storage root is dropped. */
-private fun displayPath(path: String): String = path.removePrefix("/storage/emulated/0/").removePrefix("/storage/")
-
 // ---------------------------------------------------------------- Detail screens
 
 @Composable
@@ -494,7 +592,9 @@ private fun SearchScreen(lib: Library, vm: MusicViewModel, onBack: () -> Unit, o
             val tracks = lib.tracks.filter { needle in it.title.lowercase() || needle in it.artist.lowercase() || needle in it.album.lowercase() }
             val albums = lib.albums.filter { needle in it.name.lowercase() }
             val artists = lib.artists.filter { needle in it.name.lowercase() }
+            val lists = vm.playlists.filter { needle in it.name.lowercase() }
             CardList {
+                items(lists, key = { "p" + it.path }) { pl -> PlaylistRow(pl, vm) { open(Screen.PlaylistView(pl.path)) } }
                 items(artists, key = { "ar" + it.name }) { a -> Row2(a.tracks.first().id, a.name, stringResource(R.string.tab_artists), round = true, selectKey = "ar${a.name}") { open(Screen.ArtistView(a.name)) } }
                 items(albums, key = { "al" + it.id }) { a -> Row2(a.tracks.first().id, a.name, a.artist, selectKey = "al${a.id}") { open(Screen.AlbumView(a.id)) } }
                 tracksSection(tracks, vm, withHeader = false)

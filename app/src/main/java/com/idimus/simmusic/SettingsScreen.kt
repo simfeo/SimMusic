@@ -20,7 +20,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.remember
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
@@ -104,6 +109,32 @@ fun SettingsScreen(vm: MusicViewModel, onBack: () -> Unit) {
                 }
                 Switch(vm.includeSubfolders, { vm.updateIncludeSubfolders(it) }, enabled = vm.folderTree,
                     colors = SwitchDefaults.colors(checkedTrackColor = SevenColors.accent))
+            }
+        }
+
+        Header(R.string.playlist_folders)
+        Card {
+            val actions = LocalActions.current
+            val context = LocalContext.current
+            val trees = remember(actions?.grantsVersion) { Grants.trees(context) }
+            Text(stringResource(R.string.playlist_folders_summary), color = SevenColors.secondaryText(), fontSize = 14.sp,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 14.dp, bottom = 4.dp))
+            trees.forEach { tree ->
+                Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Folder, null, Modifier.size(24.dp), tint = SevenColors.accent)
+                    Spacer(Modifier.width(14.dp))
+                    Text(Grants.treePath(tree)?.let(::displayPath)?.ifEmpty { stringResource(R.string.internal_storage) } ?: tree.toString(),
+                        color = SevenColors.text(), fontSize = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                    IconButton({ actions?.releaseGrant(tree) }) { Icon(Icons.Rounded.Close, stringResource(R.string.remove), tint = SevenColors.secondaryText()) }
+                }
+            }
+            Row(
+                Modifier.fillMaxWidth().clickable { actions?.requestGrant(null) }.padding(horizontal = 20.dp, vertical = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(Icons.Rounded.Add, null, Modifier.size(24.dp), tint = SevenColors.accent)
+                Spacer(Modifier.width(14.dp))
+                Text(stringResource(R.string.add_folder), color = SevenColors.accent, fontSize = 17.sp)
             }
         }
         Spacer(Modifier.height(24.dp))

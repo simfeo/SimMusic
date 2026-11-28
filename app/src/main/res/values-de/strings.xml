@@ -64,7 +64,6 @@
     <string name="not_playing">Keine Wiedergabe</string>
     <string name="unknown_artist">Unbekannter Künstler</string>
     <string name="unknown_album">Unbekanntes Album</string>
-    <string name="playlists_soon">Playlists kommen in einer späteren Version.</string>
     <plurals name="n_tracks">
         <item quantity="one">%d Titel</item>
         <item quantity="other">%d Titel</item>
@@ -80,5 +79,35 @@
     <plurals name="delete_tracks_title">
         <item quantity="one">%d Titel löschen?</item>
         <item quantity="other">%d Titel löschen?</item>
+    </plurals>
+    <string name="new_playlist">Neue Playlist</string>
+    <string name="add_to_playlist">Zur Playlist hinzufügen</string>
+    <string name="add_to_playlist_short">Hinzufügen</string>
+    <string name="remove_from_playlist">Aus Playlist entfernen</string>
+    <string name="delete_playlist">Playlist löschen</string>
+    <string name="delete_playlist_title">„%s“ löschen?</string>
+    <string name="delete_playlist_text">Die Playlist-Datei wird gelöscht. Die Titel bleiben auf deinem Handy.</string>
+    <string name="playlist_name">Name</string>
+    <string name="save_in">Speichern in</string>
+    <string name="create">Erstellen</string>
+    <string name="recent">Zuletzt</string>
+    <string name="all_playlists">Alle Playlists</string>
+    <string name="no_playlists">Noch keine Playlists. Playlist-Dateien (.m3u, .m3u8, .pls) auf deinem Handy erscheinen hier.</string>
+    <string name="playlist_exists">Eine Playlist mit diesem Namen gibt es schon</string>
+    <string name="playlist_read_only">PLS-Playlists können nur abgespielt werden</string>
+    <string name="playlist_save_failed">Playlist konnte nicht gespeichert werden</string>
+    <string name="added_to_playlist">Zu %s hinzugefügt</string>
+    <string name="missing_track">Datei nicht gefunden</string>
+    <string name="playlist_folders">Playlist-Ordner</string>
+    <string name="playlist_folders_summary">Ordner, in denen Sim Music Playlists erstellen und bearbeiten darf</string>
+    <string name="add_folder">Ordner hinzufügen</string>
+    <string name="remove">Entfernen</string>
+    <string name="internal_storage">Interner Speicher</string>
+    <string name="grant_folder_title">Bearbeiten erlauben?</string>
+    <string name="grant_folder_text">Um diese Playlist zu ändern, erlaube Sim Music, den Ordner %s zu bearbeiten. Wähle ihn oder einen übergeordneten Ordner und tippe auf „Diesen Ordner verwenden“.</string>
+    <string name="choose_folder">Ordner wählen</string>
+    <plurals name="n_playlists">
+        <item quantity="one">%d Playlist</item>
+        <item quantity="other">%d Playlists</item>
     </plurals>
 </resources>

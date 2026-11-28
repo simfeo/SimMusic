@@ -64,7 +64,6 @@
     <string name="not_playing">Aucune lecture en cours</string>
     <string name="unknown_artist">Artiste inconnu</string>
     <string name="unknown_album">Album inconnu</string>
-    <string name="playlists_soon">Les playlists arriveront dans une prochaine version.</string>
     <plurals name="n_tracks">
         <item quantity="one">%d titre</item>
         <item quantity="many">%d titres</item>
@@ -84,5 +83,36 @@
         <item quantity="one">Supprimer %d titre ?</item>
         <item quantity="many">Supprimer %d titres ?</item>
         <item quantity="other">Supprimer %d titres ?</item>
+    </plurals>
+    <string name="new_playlist">Nouvelle playlist</string>
+    <string name="add_to_playlist">Ajouter à une playlist</string>
+    <string name="add_to_playlist_short">Ajouter</string>
+    <string name="remove_from_playlist">Retirer de la playlist</string>
+    <string name="delete_playlist">Supprimer la playlist</string>
+    <string name="delete_playlist_title">Supprimer « %s » ?</string>
+    <string name="delete_playlist_text">Le fichier de la playlist sera supprimé. Les titres restent sur votre téléphone.</string>
+    <string name="playlist_name">Nom</string>
+    <string name="save_in">Enregistrer dans</string>
+    <string name="create">Créer</string>
+    <string name="recent">Récentes</string>
+    <string name="all_playlists">Toutes les playlists</string>
+    <string name="no_playlists">Aucune playlist pour l\'instant. Les fichiers de playlist (.m3u, .m3u8, .pls) de votre téléphone apparaissent ici.</string>
+    <string name="playlist_exists">Une playlist porte déjà ce nom</string>
+    <string name="playlist_read_only">Les playlists PLS peuvent seulement être lues</string>
+    <string name="playlist_save_failed">Impossible d\'enregistrer la playlist</string>
+    <string name="added_to_playlist">Ajouté à %s</string>
+    <string name="missing_track">Fichier introuvable</string>
+    <string name="playlist_folders">Dossiers de playlists</string>
+    <string name="playlist_folders_summary">Dossiers où Sim Music peut créer et modifier des playlists</string>
+    <string name="add_folder">Ajouter un dossier</string>
+    <string name="remove">Retirer</string>
+    <string name="internal_storage">Stockage interne</string>
+    <string name="grant_folder_title">Autoriser la modification ?</string>
+    <string name="grant_folder_text">Pour modifier cette playlist, autorisez Sim Music à modifier le dossier %s. Choisissez-le, ou un dossier parent, puis touchez Utiliser ce dossier.</string>
+    <string name="choose_folder">Choisir un dossier</string>
+    <plurals name="n_playlists">
+        <item quantity="one">%d playlist</item>
+        <item quantity="many">%d playlists</item>
+        <item quantity="other">%d playlists</item>
     </plurals>
 </resources>

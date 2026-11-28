@@ -64,7 +64,6 @@
     <string name="not_playing">再生していません</string>
     <string name="unknown_artist">不明なアーティスト</string>
     <string name="unknown_album">不明なアルバム</string>
-    <string name="playlists_soon">プレイリストは今後のバージョンで追加されます。</string>
     <plurals name="n_tracks">
         <item quantity="other">%d曲</item>
     </plurals>
@@ -76,5 +75,34 @@
     </plurals>
     <plurals name="delete_tracks_title">
         <item quantity="other">%d曲を削除しますか？</item>
+    </plurals>
+    <string name="new_playlist">新しいプレイリスト</string>
+    <string name="add_to_playlist">プレイリストに追加</string>
+    <string name="add_to_playlist_short">追加</string>
+    <string name="remove_from_playlist">プレイリストから削除</string>
+    <string name="delete_playlist">プレイリストを削除</string>
+    <string name="delete_playlist_title">「%s」を削除しますか？</string>
+    <string name="delete_playlist_text">プレイリストのファイルが削除されます。曲はスマートフォンに残ります。</string>
+    <string name="playlist_name">名前</string>
+    <string name="save_in">保存先</string>
+    <string name="create">作成</string>
+    <string name="recent">最近</string>
+    <string name="all_playlists">すべてのプレイリスト</string>
+    <string name="no_playlists">プレイリストはまだありません。スマートフォン内のプレイリストファイル（.m3u、.m3u8、.pls）がここに表示されます。</string>
+    <string name="playlist_exists">同じ名前のプレイリストがすでにあります</string>
+    <string name="playlist_read_only">PLS プレイリストは再生のみできます</string>
+    <string name="playlist_save_failed">プレイリストを保存できませんでした</string>
+    <string name="added_to_playlist">%s に追加しました</string>
+    <string name="missing_track">ファイルが見つかりません</string>
+    <string name="playlist_folders">プレイリストのフォルダ</string>
+    <string name="playlist_folders_summary">Sim Music がプレイリストを作成・編集できるフォルダ</string>
+    <string name="add_folder">フォルダを追加</string>
+    <string name="remove">削除</string>
+    <string name="internal_storage">内部ストレージ</string>
+    <string name="grant_folder_title">編集を許可しますか？</string>
+    <string name="grant_folder_text">このプレイリストを変更するには、Sim Music にフォルダ %s の編集を許可してください。そのフォルダか上位のフォルダを選び、「このフォルダを使用」をタップします。</string>
+    <string name="choose_folder">フォルダを選択</string>
+    <plurals name="n_playlists">
+        <item quantity="other">%d 件のプレイリスト</item>
     </plurals>
 </resources>

@@ -64,7 +64,6 @@
     <string name="not_playing">Нічого не грає</string>
     <string name="unknown_artist">Невідомий виконавець</string>
     <string name="unknown_album">Невідомий альбом</string>
-    <string name="playlists_soon">Плейлисти з’являться в наступній версії.</string>
     <plurals name="n_tracks">
         <item quantity="one">%d трек</item>
         <item quantity="few">%d треки</item>
@@ -88,5 +87,37 @@
         <item quantity="few">Видалити %d треки?</item>
         <item quantity="many">Видалити %d треків?</item>
         <item quantity="other">Видалити %d треку?</item>
+    </plurals>
+    <string name="new_playlist">Новий плейлист</string>
+    <string name="add_to_playlist">Додати в плейлист</string>
+    <string name="add_to_playlist_short">Додати</string>
+    <string name="remove_from_playlist">Прибрати з плейлиста</string>
+    <string name="delete_playlist">Видалити плейлист</string>
+    <string name="delete_playlist_title">Видалити «%s»?</string>
+    <string name="delete_playlist_text">Файл плейлиста буде видалено. Треки залишаться на телефоні.</string>
+    <string name="playlist_name">Назва</string>
+    <string name="save_in">Зберегти в</string>
+    <string name="create">Створити</string>
+    <string name="recent">Нещодавні</string>
+    <string name="all_playlists">Усі плейлисти</string>
+    <string name="no_playlists">Плейлистів ще немає. Тут з’являться файли плейлистів (.m3u, .m3u8, .pls) з вашого телефона.</string>
+    <string name="playlist_exists">Плейлист із такою назвою вже є</string>
+    <string name="playlist_read_only">Плейлисти PLS можна лише відтворювати</string>
+    <string name="playlist_save_failed">Не вдалося зберегти плейлист</string>
+    <string name="added_to_playlist">Додано до %s</string>
+    <string name="missing_track">Файл не знайдено</string>
+    <string name="playlist_folders">Папки плейлистів</string>
+    <string name="playlist_folders_summary">Папки, де Sim Music може створювати й редагувати плейлисти</string>
+    <string name="add_folder">Додати папку</string>
+    <string name="remove">Прибрати</string>
+    <string name="internal_storage">Внутрішня пам’ять</string>
+    <string name="grant_folder_title">Дозволити редагування?</string>
+    <string name="grant_folder_text">Щоб змінити цей плейлист, дозвольте Sim Music редагувати папку %s. Виберіть її або папку вище й натисніть «Використовувати цю папку».</string>
+    <string name="choose_folder">Вибрати папку</string>
+    <plurals name="n_playlists">
+        <item quantity="one">%d плейлист</item>
+        <item quantity="few">%d плейлисти</item>
+        <item quantity="many">%d плейлистів</item>
+        <item quantity="other">%d плейлиста</item>
     </plurals>
 </resources>

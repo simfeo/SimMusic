@@ -64,7 +64,6 @@
     <string name="not_playing">Nessuna riproduzione</string>
     <string name="unknown_artist">Artista sconosciuto</string>
     <string name="unknown_album">Album sconosciuto</string>
-    <string name="playlists_soon">Le playlist arriveranno in una versione successiva.</string>
     <plurals name="n_tracks">
         <item quantity="one">%d brano</item>
         <item quantity="many">%d brani</item>
@@ -84,5 +83,36 @@
         <item quantity="one">Eliminare %d brano?</item>
         <item quantity="many">Eliminare %d brani?</item>
         <item quantity="other">Eliminare %d brani?</item>
+    </plurals>
+    <string name="new_playlist">Nuova playlist</string>
+    <string name="add_to_playlist">Aggiungi a playlist</string>
+    <string name="add_to_playlist_short">Aggiungi</string>
+    <string name="remove_from_playlist">Rimuovi dalla playlist</string>
+    <string name="delete_playlist">Elimina playlist</string>
+    <string name="delete_playlist_title">Eliminare \"%s\"?</string>
+    <string name="delete_playlist_text">Il file della playlist verrà eliminato. I brani restano sul telefono.</string>
+    <string name="playlist_name">Nome</string>
+    <string name="save_in">Salva in</string>
+    <string name="create">Crea</string>
+    <string name="recent">Recenti</string>
+    <string name="all_playlists">Tutte le playlist</string>
+    <string name="no_playlists">Ancora nessuna playlist. Qui compaiono i file di playlist (.m3u, .m3u8, .pls) del telefono.</string>
+    <string name="playlist_exists">Esiste già una playlist con questo nome</string>
+    <string name="playlist_read_only">Le playlist PLS si possono solo riprodurre</string>
+    <string name="playlist_save_failed">Impossibile salvare la playlist</string>
+    <string name="added_to_playlist">Aggiunto a %s</string>
+    <string name="missing_track">File non trovato</string>
+    <string name="playlist_folders">Cartelle delle playlist</string>
+    <string name="playlist_folders_summary">Cartelle in cui Sim Music può creare e modificare playlist</string>
+    <string name="add_folder">Aggiungi cartella</string>
+    <string name="remove">Rimuovi</string>
+    <string name="internal_storage">Memoria interna</string>
+    <string name="grant_folder_title">Consentire la modifica?</string>
+    <string name="grant_folder_text">Per modificare questa playlist, consenti a Sim Music di modificare la cartella %s. Sceglila, o una cartella superiore, e tocca Usa questa cartella.</string>
+    <string name="choose_folder">Scegli cartella</string>
+    <plurals name="n_playlists">
+        <item quantity="one">%d playlist</item>
+        <item quantity="many">%d playlist</item>
+        <item quantity="other">%d playlist</item>
     </plurals>
 </resources>

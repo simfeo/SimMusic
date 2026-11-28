@@ -59,6 +59,12 @@ data class Artist(val name: String, val tracks: List<Track>)
 class Library(val tracks: List<Track>) {
     val byId: Map<Long, Track> = tracks.associateBy { it.id }
 
+    private val byPath: Map<String, Track> by lazy { tracks.associateBy { "${it.dir}/${it.fileName}" } }
+    private val byPathLower: Map<String, Track> by lazy { tracks.associateBy { "${it.dir}/${it.fileName}".lowercase() } }
+
+    /** Playlists written on Windows often get the letter case of paths wrong. */
+    fun trackAt(path: String): Track? = byPath[path] ?: byPathLower[path.lowercase()]
+
     val albums: List<Album> = tracks.groupBy { it.albumId }.map { (id, t) ->
         Album(id, t.first().album, t.first().artist, t.sortedWith(compareBy({ it.trackNo }, { it.title })))
     }.sortedWith(compareBy(Collation.labels) { it.name })

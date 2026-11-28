@@ -67,7 +67,44 @@ class MusicViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun loadLibrary() = viewModelScope.launch {
-        library = withContext(Dispatchers.IO) { LibraryStore.reload(getApplication()) }
+        val lib = withContext(Dispatchers.IO) { LibraryStore.reload(getApplication()) }
+        library = lib
+        playlists = withContext(Dispatchers.IO) { PlaylistStore.reload(getApplication(), lib) }
+    }
+
+    var playlists by mutableStateOf<List<Playlist>>(emptyList()); private set
+    /** Bumped on every play or edit so the recent list in the picker recomposes. */
+    var recentPlaylists by mutableStateOf(RecentPlaylists.get(app)); private set
+
+    private fun touchPlaylist(path: String) {
+        RecentPlaylists.touch(getApplication(), path)
+        recentPlaylists = RecentPlaylists.get(getApplication())
+    }
+
+    fun playPlaylist(pl: Playlist, start: Int = 0, shuffled: Boolean = false) {
+        play(pl.tracks, start, shuffled)
+        touchPlaylist(pl.path)
+    }
+
+    /** Runs a playlist change off the main thread, then rereads the playlists so every screen updates. */
+    fun editPlaylists(touch: String?, op: (Application) -> PlaylistStore.Result, onDone: (PlaylistStore.Result) -> Unit) = viewModelScope.launch {
+        val app = getApplication<Application>()
+        val r = withContext(Dispatchers.IO) { op(app) }
+        if (r == PlaylistStore.Result.Ok) {
+            library?.let { lib -> playlists = withContext(Dispatchers.IO) { PlaylistStore.reload(app, lib) } }
+            touch?.let(::touchPlaylist)
+        }
+        onDone(r)
+    }
+
+    fun forgetPlaylist(path: String) {
+        RecentPlaylists.forget(getApplication(), path)
+        recentPlaylists = RecentPlaylists.get(getApplication())
+    }
+
+    fun reloadPlaylists() = viewModelScope.launch {
+        val lib = library ?: return@launch
+        playlists = withContext(Dispatchers.IO) { PlaylistStore.reload(getApplication(), lib) }
     }
 
     private fun sync(p: Player) {

@@ -41,7 +41,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.QueueMusic
+import androidx.compose.material.icons.automirrored.rounded.PlaylistAdd
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
@@ -93,12 +93,98 @@ class TrackActions(
     private val context: Context,
     private val vm: MusicViewModel,
     private val launchDelete: (IntentSenderRequest) -> Unit,
+    private val launchTree: (Intent) -> Unit,
     val goAlbum: (Long) -> Unit,
     val goArtist: (String) -> Unit,
 ) {
     var details by mutableStateOf<Track?>(null)
     var pendingDelete by mutableStateOf<List<Track>>(emptyList())
     private var deleting: List<Track> = emptyList()
+
+    // ------------------------------------------------ playlists
+
+    /** Tracks waiting for the "Add to playlist" picker; empty hides it. */
+    var addTo by mutableStateOf<List<Track>>(emptyList())
+    /** Tracks for a new playlist; null hides the dialog. */
+    var newPlaylistFor by mutableStateOf<List<Track>?>(null)
+    var deletePlaylistAsk by mutableStateOf<Playlist?>(null)
+    /** Folder that must be granted before the last change can be saved; null hides the dialog. */
+    var grantNeeded by mutableStateOf<String?>(null)
+    /** Bumped when grants change, so the settings list rereads them. */
+    var grantsVersion by mutableStateOf(0)
+    private var afterGrant: ((String) -> Unit)? = null
+
+    /** Opens the system folder picker; [then] gets the granted folder's path. */
+    fun requestGrant(startAt: String?, then: (String) -> Unit = {}) {
+        afterGrant = then
+        launchTree(Grants.pickerIntent(startAt))
+    }
+
+    fun onTreeResult(tree: Uri?) {
+        val then = afterGrant
+        afterGrant = null
+        if (tree == null) return
+        runCatching { Grants.take(context, tree) }
+        grantsVersion++
+        vm.reloadPlaylists()
+        Grants.treePath(tree)?.let { then?.invoke(it) }
+    }
+
+    fun releaseGrant(tree: Uri) {
+        Grants.release(context, tree)
+        grantsVersion++
+        vm.reloadPlaylists()
+    }
+
+    fun confirmGrant() {
+        val dir = grantNeeded ?: return
+        grantNeeded = null
+        launchTree(Grants.pickerIntent(dir))
+    }
+
+    private fun toast(res: Int, vararg args: Any) = Toast.makeText(context, context.getString(res, *args), Toast.LENGTH_SHORT).show()
+
+    private fun handle(r: PlaylistStore.Result, retry: () -> Unit, ok: () -> Unit = {}) = when (r) {
+        PlaylistStore.Result.Ok -> ok()
+        is PlaylistStore.Result.NeedsGrant -> { afterGrant = { retry() }; grantNeeded = r.dir }
+        PlaylistStore.Result.Failed -> toast(R.string.playlist_save_failed)
+    }
+
+    /** Re-reads the playlist by path, since a retry after a grant may run on a fresh copy. */
+    private fun latest(pl: Playlist) = PlaylistStore.find(pl.path) ?: pl
+
+    fun addToPlaylist(pl: Playlist, tracks: List<Track>) {
+        addTo = emptyList()
+        if (!pl.editable) { toast(R.string.playlist_read_only); return }
+        vm.editPlaylists(pl.path, { app -> latest(pl).let { PlaylistStore.write(app, it, it.entries + tracks.map { t -> PlaylistEntry("", t) }) } }) {
+            handle(it, { addToPlaylist(latest(pl), tracks) }) { toast(R.string.added_to_playlist, pl.name) }
+        }
+    }
+
+    fun removeFromPlaylist(pl: Playlist, index: Int) {
+        if (!pl.editable) { toast(R.string.playlist_read_only); return }
+        vm.editPlaylists(pl.path, { app -> latest(pl).let { PlaylistStore.write(app, it, it.entries.filterIndexed { i, _ -> i != index }) } }) {
+            handle(it, { removeFromPlaylist(latest(pl), index) })
+        }
+    }
+
+    fun createPlaylist(dir: String, name: String, tracks: List<Track>) {
+        newPlaylistFor = null
+        var created: String? = null
+        vm.editPlaylists("$dir/$name.m3u8", { app -> PlaylistStore.create(app, dir, name, tracks).also { created = it.second }.first }) {
+            handle(it, { createPlaylist(dir, name, tracks) }) {
+                if (tracks.isNotEmpty()) toast(R.string.added_to_playlist, name)
+                created?.let { p -> if (p != "$dir/$name.m3u8") vm.forgetPlaylist("$dir/$name.m3u8") }
+            }
+        }
+    }
+
+    fun deletePlaylist(pl: Playlist) {
+        deletePlaylistAsk = null
+        vm.editPlaylists(null, { app -> PlaylistStore.delete(app, pl) }) {
+            handle(it, { deletePlaylist(pl) }) { vm.forgetPlaylist(pl.path) }
+        }
+    }
 
     fun share(tracks: List<Track>) {
         if (tracks.isEmpty()) return
@@ -172,13 +258,17 @@ fun rememberTrackActions(vm: MusicViewModel, goAlbum: (Long) -> Unit, goArtist: 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         actions?.onDeleteResult(it.resultCode)
     }
-    actions = remember(vm) { TrackActions(context, vm, { launcher.launch(it) }, goAlbum, goArtist) }
+    val treeLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        actions?.onTreeResult(if (it.resultCode == Activity.RESULT_OK) it.data?.data else null)
+    }
+    actions = remember(vm) { TrackActions(context, vm, { launcher.launch(it) }, { treeLauncher.launch(it) }, goAlbum, goArtist) }
     return actions
 }
 
 /** Dialogs owned by [TrackActions]; placed once at the app root. */
 @Composable
-fun TrackActionDialogs(actions: TrackActions) {
+fun TrackActionDialogs(actions: TrackActions, vm: MusicViewModel) {
+    PlaylistDialogs(actions, vm)
     actions.details?.let { TrackDetailsDialog(it) { actions.details = null } }
     val pending = actions.pendingDelete
     if (pending.isNotEmpty()) {
@@ -208,6 +298,7 @@ fun TrackMenuButton(track: Track, extra: List<Pair<Int, () -> Unit>> = emptyList
             @Composable fun item(res: Int, action: () -> Unit) =
                 DropdownMenuItem({ Text(stringResource(res), color = SevenColors.text(), fontSize = 16.sp) }, { open = false; action() })
             extra.forEach { (res, action) -> item(res, action) }
+            item(R.string.add_to_playlist) { actions.addTo = listOf(track) }
             item(R.string.track_details) { actions.details = track }
             item(R.string.go_to_album) { afterJump(); actions.goAlbum(track.albumId) }
             item(R.string.go_to_artist) { afterJump(); actions.goArtist(track.artist) }
@@ -256,7 +347,7 @@ private fun SelectCheck(selected: Boolean) {
 
 /** Replaces the mini player and tabs while selecting: count, close, then Play, Share, Delete. */
 @Composable
-fun SelectionBar(count: Int, onClose: () -> Unit, onPlay: () -> Unit, onShare: () -> Unit, onDelete: () -> Unit) {
+fun SelectionBar(count: Int, onClose: () -> Unit, onPlay: () -> Unit, onAdd: () -> Unit, onShare: () -> Unit, onDelete: () -> Unit) {
     Column(Modifier.fillMaxWidth().background(SevenColors.canvas()).navigationBarsPadding()) {
         Row(Modifier.fillMaxWidth().padding(start = 8.dp, end = 20.dp, top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.cancel), tint = SevenColors.text()) }
@@ -265,6 +356,7 @@ fun SelectionBar(count: Int, onClose: () -> Unit, onPlay: () -> Unit, onShare: (
         }
         Row(Modifier.fillMaxWidth().heightIn(min = 60.dp).padding(horizontal = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             BarAction(Icons.Rounded.PlayArrow, R.string.play_all, onPlay)
+            BarAction(Icons.AutoMirrored.Rounded.PlaylistAdd, R.string.add_to_playlist_short, onAdd)
             BarAction(Icons.Rounded.Share, R.string.share, onShare)
             BarAction(Icons.Rounded.Delete, R.string.delete, onDelete)
         }
@@ -274,7 +366,7 @@ fun SelectionBar(count: Int, onClose: () -> Unit, onPlay: () -> Unit, onShare: (
 @Composable
 private fun BarAction(icon: ImageVector, label: Int, onClick: () -> Unit) {
     Column(
-        Modifier.clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick).padding(horizontal = 24.dp, vertical = 8.dp),
+        Modifier.clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(icon, null, Modifier.size(24.dp), tint = SevenColors.text())
